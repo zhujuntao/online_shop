@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:onlineshop/page/adbanner.dart';
+import 'package:onlineshop/page/floor_content.dart';
+import 'package:onlineshop/page/floor_title.dart';
 import 'package:onlineshop/page/leader_phone.dart';
 import 'package:onlineshop/page/recommend.dart';
 import 'package:onlineshop/service/service_method.dart';
@@ -56,6 +58,14 @@ class _HomePageState extends State<HomePage> {
               List<Map> recommendList =
                   (data['data']['recommend'] as List).cast();
 
+              //商品楼层展示
+              String floor1Title = data['data']['floor1Pic']['PICTURE_ADDRESS'];
+              String floor2Title = data['data']['floor2Pic']['PICTURE_ADDRESS'];
+              String floor3Title = data['data']['floor3Pic']['PICTURE_ADDRESS'];
+              List<Map> floor1 = (data['data']['floor1'] as List).cast();
+              List<Map> floor2 = (data['data']['floor2'] as List).cast();
+              List<Map> floor3 = (data['data']['floor3'] as List).cast();
+
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -68,6 +78,13 @@ class _HomePageState extends State<HomePage> {
                     LeaderPhone(
                         leaderImage: leaderImage, leaderPhone: leaderPhone),
                     Recommend(recommendList: recommendList),
+                    //楼层展示商品
+                    FloorTitle(picture_address: floor1Title),
+                    FloorContent(floorGoodsList: floor1),
+                    FloorTitle(picture_address: floor2Title),
+                    FloorContent(floorGoodsList: floor2),
+                    FloorTitle(picture_address: floor3Title),
+                    FloorContent(floorGoodsList: floor3),
                   ],
                 ),
               );
