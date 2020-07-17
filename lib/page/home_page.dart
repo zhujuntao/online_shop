@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:onlineshop/page/adbanner.dart';
+import 'package:onlineshop/page/leader_phone.dart';
+import 'package:onlineshop/page/recommend.dart';
 import 'package:onlineshop/service/service_method.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,12 +40,36 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               // ignore: missing_return
               var data = json.decode(snapshot.data.toString());
-              List<Map> swiper =
-                  (data['data']['slides'] as List).cast(); // 顶部轮播组件数
-              return Column(
-                children: <Widget>[
-                  SwiperDiy(swiperDataList: swiper),
-                ],
+              // 顶部轮播组件数
+              List<Map> swiper = (data['data']['slides'] as List).cast();
+              List<Map> navgatorList =
+                  (data['data']['category'] as List).cast();
+              //广告图片
+              String adPicture =
+                  data['data']['advertesPicture']['PICTURE_ADDRESS'];
+              //店长图片
+              String leaderImage = data['data']['shopInfo']['leaderImage'];
+              //店长电话
+              String leaderPhone = data['data']['shopInfo']['leaderPhone'];
+
+              //商品推荐
+              List<Map> recommendList =
+                  (data['data']['recommend'] as List).cast();
+
+              return SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SwiperDiy(swiperDataList: swiper),
+                    TopNavigator(
+                      navigatorList: navgatorList,
+                    ),
+                    //广告组件
+                    AdBanner(adPicture: adPicture),
+                    LeaderPhone(
+                        leaderImage: leaderImage, leaderPhone: leaderPhone),
+                    Recommend(recommendList: recommendList),
+                  ],
+                ),
               );
             } else {
               return Center(
@@ -50,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                   '加载中...',
                   style: TextStyle(
                       fontSize:
-                      ScreenUtil().setSp(24, allowFontScalingSelf: false)),
+                          ScreenUtil().setSp(24, allowFontScalingSelf: false)),
                 ),
               );
             }
@@ -81,7 +108,7 @@ class SwiperDiy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(width: 750, height: 1334);
+//    ScreenUtil.init(width: 750, height: 1334);
     print('设备像素密度：${ScreenUtil.pixelRatio}');
     print('设备高度：${ScreenUtil.screenHeight}');
     print('设备宽度：${ScreenUtil.screenWidth}');
@@ -99,6 +126,53 @@ class SwiperDiy extends StatelessWidget {
             fit: BoxFit.fill,
           );
         },
+      ),
+    );
+  }
+}
+
+//
+
+class TopNavigator extends StatelessWidget {
+  final List navigatorList;
+
+  const TopNavigator({Key key, this.navigatorList}) : super(key: key);
+
+  Widget _gridViewItemUI(BuildContext context, item) {
+    return InkWell(
+      onTap: () {
+        print('点击了导航');
+      },
+      child: Column(
+        children: <Widget>[
+          Image.network(
+            item['image'],
+            width: ScreenUtil().setWidth(95),
+          ),
+          Text(item['mallCategoryName']),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (navigatorList.length > 10) {
+      navigatorList.removeRange(10, navigatorList.length);
+    }
+    return Container(
+      height: ScreenUtil().setHeight(320),
+      padding: EdgeInsets.all(3.0),
+      child: GridView.count(
+        crossAxisCount: 5,
+        padding: EdgeInsets.all(5.0),
+        //水平方向间距
+//        mainAxisSpacing: 5.0,
+        // 垂直方向间距
+//        crossAxisSpacing: 5.0,
+        children: navigatorList.map((item) {
+          return _gridViewItemUI(context, item);
+        }).toList(),
       ),
     );
   }
