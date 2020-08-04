@@ -37,6 +37,8 @@ dependencies:
   flutter_screenutil: ^2.2.0
   #拨打电话
   url_launcher: ^5.0.1
+  #刷新库
+  flutter_easyrefresh: ^2.1.5
 
 dev_dependencies:
   flutter_test:
