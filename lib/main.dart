@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:onlineshop/page/index_page.dart';
+import 'package:onlineshop/provide/category_goods_list.dart';
 import 'package:onlineshop/provide/child_category.dart';
 import 'package:provide/provide.dart';
 
 void main() {
   var childCategory = ChildCategory();
+  var categoryGoodsListProvide = CategoryGoodsListProvide();
   var providers = Providers();
-  providers..provide(Provider<ChildCategory>.value(childCategory));
+  providers
+    ..provide(Provider<ChildCategory>.value(childCategory))
+    ..provide(
+        Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
 
   runApp(ProviderNode(child: MyApp(), providers: providers));
 }
