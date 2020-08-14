@@ -20,8 +20,8 @@ class ChildCategory with ChangeNotifier {
     subId = ''; //点击大类时，把子类ID清空
     //childCategoryList = list;
     BxMallSubDto all = BxMallSubDto();
-    all.mallSubId = '00';
-    all.mallCategoryId = '00';
+    all.mallSubId = '';
+    all.mallCategoryId = '';
     all.comments = 'null';
     all.mallSubName = '全部';
     childCategoryList = [all];

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:onlineshop/config/service_url.dart';
 import 'package:onlineshop/model/category.dart';
 import 'package:onlineshop/model/category_goodslist_model.dart';
@@ -197,14 +198,9 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
         : false;
     return InkWell(
       onTap: () {
-        if (index == 0) {
-          Provide.value<ChildCategory>(context).changeChildIndex(index, '');
-          _getGoodsList('');
-        } else {
-          Provide.value<ChildCategory>(context)
-              .changeChildIndex(index, item.mallSubId);
-          _getGoodsList(item.mallSubId);
-        }
+        Provide.value<ChildCategory>(context)
+            .changeChildIndex(index, item.mallSubId);
+        _getGoodsList(item.mallSubId);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
@@ -248,6 +244,13 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
         list = goodsList.data;
       });*/
       if (goodsList.data == null) {
+        Fluttertoast.showToast(
+            msg: '暂无更多数据',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 16.0,
+            backgroundColor: Colors.pink,
+            textColor: Colors.white);
         Provide.value<ChildCategory>(context).changeNoMore('没有更多数据了');
       } else {
         Provide.value<CategoryGoodsListProvide>(context)
