@@ -43,6 +43,10 @@ dependencies:
   provide: ^1.0.2
   #toast库
   fluttertoast: ^7.0.2
+  #路由管理
+  #fluro:
+  #   git: git://github.com/theyakka/fluro.git
+  fluro: ^1.6.3
 
 dev_dependencies:
   flutter_test:

@@ -13,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
+import '../routers/application.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,7 +33,9 @@ class _HomePageState extends State<HomePage> {
     if (hotGoodsList.length != 0) {
       List<Widget> listWidget = hotGoodsList.map((e) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Application.router.navigateTo(context, '/detail?id=${e['goodsId']}');
+          },
           child: Container(
             width: ScreenUtil().setWidth(372),
             color: Colors.white,
