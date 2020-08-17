@@ -34,7 +34,8 @@ class _HomePageState extends State<HomePage> {
       List<Widget> listWidget = hotGoodsList.map((e) {
         return InkWell(
           onTap: () {
-            Application.router.navigateTo(context, '/detail?id=${e['goodsId']}');
+            Application.router
+                .navigateTo(context, '/detail?id=${e['goodsId']}');
           },
           child: Container(
             width: ScreenUtil().setWidth(372),
@@ -294,9 +295,15 @@ class SwiperDiy extends StatelessWidget {
         itemCount: swiperDataList.length,
         pagination: SwiperPagination(), //分页器
         itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            '${swiperDataList[index]['image']}',
-            fit: BoxFit.fill,
+          return InkWell(
+            onTap: () {
+              Application.router.navigateTo(
+                  context, '/detail?id=${swiperDataList[index]['goodsId']}');
+            },
+            child: Image.network(
+              '${swiperDataList[index]['image']}',
+              fit: BoxFit.fill,
+            ),
           );
         },
       ),

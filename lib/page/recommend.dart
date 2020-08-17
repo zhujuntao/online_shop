@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:onlineshop/routers/application.dart';
 
 /*
 * 推荐商品
@@ -27,9 +28,11 @@ class Recommend extends StatelessWidget {
 
   //商品单独项子view方法
 
-  Widget _item(int index) {
+  Widget _item(BuildContext context,int index) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Application.router.navigateTo(context, '/detail?id=${recommendList[index]['goodsId']}');
+      },
       child: Container(
         height: ScreenUtil().setHeight(330),
         width: ScreenUtil().setWidth(250),
@@ -65,7 +68,7 @@ class Recommend extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: recommendList.length,
         itemBuilder: (context, index) {
-          return _item(index);
+          return _item(context,index);
         },
       ),
     );
