@@ -5,6 +5,7 @@ import 'package:provide/provide.dart';
 
 import 'details_page/details_explain.dart';
 import 'details_page/details_top_area.dart';
+import 'details_page/details_web.dart';
 
 class DetailsPage extends StatelessWidget {
   final String goodsId;
@@ -36,6 +37,8 @@ class DetailsPage extends StatelessWidget {
                     DetailsExplain(),
                     //tabbar
                     DetailsTabbar(),
+                    //详情&评论
+                    DetailsWeb(),
 
                   ],
                 ),

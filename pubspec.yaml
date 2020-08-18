@@ -47,6 +47,8 @@ dependencies:
   #fluro:
   #   git: git://github.com/theyakka/fluro.git
   fluro: ^1.6.3
+  #web
+  flutter_html: ^1.0.0
 
 dev_dependencies:
   flutter_test:
