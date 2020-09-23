@@ -17,7 +17,7 @@ void main() {
   var detailsInfoProvide=DetailsInfoProvide();
   var providers = Providers();
 
-
+  //使用provide状态管理
   providers
     ..provide(Provider<ChildCategory>.value(childCategory))
     ..provide(

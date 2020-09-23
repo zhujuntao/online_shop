@@ -47,27 +47,71 @@ class LsftCategoryNav extends StatefulWidget {
 class _LsftCategoryNavState extends State<LsftCategoryNav> {
   List list = [];
   var listIndex = 0;
+  var mallCategoryName;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getCategory();
-    _getGoodsList();
+    //首页跳转请求子商品列表
+    /* _getGoodsList(
+        categoryId:
+            '4' */ /*Provide.value<ChildCategory>(context).mallCategoryId*/ /*);*/
   }
 
   void _getCategory() async {
     await request('getCategory').then((value) {
       var data = json.decode(value.toString());
+      print('====data==getCategory==' + value.toString());
       //CategoryBigListModel list = CategoryBigListModel.fromJson(data['data']);
 //      CategoryModel list = CategoryModel.fromJson(data['data']);
       CategoryModel categoryModel = CategoryModel.fromJson(data);
       //categoryModel.data.forEach((element) => print(element.mallCategoryName));
+      mallCategoryName = Provide.value<ChildCategory>(context).mallCategoryName;
+      print('====222====mallCategoryName:${mallCategoryName}');
       setState(() {
         list = categoryModel.data;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].mallCategoryName == mallCategoryName) {
+            listIndex = i;
+          }
+        }
       });
-      Provide.value<ChildCategory>(context)
-          .getChildCategory(list[0].bxMallSubDto, list[0].mallCategoryId);
+
+      if (mallCategoryName != null) {
+        Provide.value<ChildCategory>(context).getChildCategory(
+            list[listIndex].bxMallSubDto,
+            list[listIndex].mallCategoryId == null
+                ? 4
+                : list[listIndex].mallCategoryId);
+        _getGoodsList(
+            categoryId: list[listIndex].mallCategoryId == null
+                ? 4
+                : list[listIndex].mallCategoryId);
+      } else {
+        Provide.value<ChildCategory>(context)
+            .getChildCategory(list[0].bxMallSubDto, list[0].mallCategoryId);
+        _getGoodsList(
+            categoryId:
+                list[0].mallCategoryId == null ? 4 : list[0].mallCategoryId);
+      }
+      //首页点击功能球跳转到分类 添加索引
+      /* if (Provide.value<ChildCategory>(context).mallCategoryId != null) {
+        setState(() {
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].mallCategoryId ==
+                Provide.value<ChildCategory>(context).mallCategoryId) {
+              listIndex = i;
+            }
+          }
+        });
+        Provide.value<ChildCategory>(context).getChildCategory(
+            list[listIndex].bxMallSubDto, list[listIndex].mallCategoryId);
+      } else {
+        Provide.value<ChildCategory>(context)
+            .getChildCategory(list[0].bxMallSubDto, list[0].mallCategoryId);
+      }*/
     });
   }
 

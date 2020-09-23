@@ -6,6 +6,7 @@ import 'router_handler.dart';
 class Routes {
   static String root = '/';
   static String detailsPage = '/detail';
+  static String categoryPage = '/category';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
@@ -15,5 +16,6 @@ class Routes {
     });
 
     router.define(detailsPage, handler: detailsHandler);//详情页
+    router.define(categoryPage, handler: categoryHandler);//分类页
   }
 }

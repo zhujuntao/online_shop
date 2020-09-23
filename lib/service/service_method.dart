@@ -1,3 +1,4 @@
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'dart:io';
@@ -10,11 +11,30 @@ Future getHomePageContent() async {
     print('开始获取首页数据........');
     Response response;
     Dio dio = new Dio();
+
+
+
+
+    //简单粗暴方式处理校验证书方法
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate  = (client) {
+      client.badCertificateCallback=(X509Certificate cert, String host, int port){
+//          if(cert.pem==PEM){ // Verify the certificate
+//            return true;
+//          }
+        return true;
+      };
+    };
+
+
+
+
+
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded").toString();
     /* dio.options.contentType =
         ContentType.parse('application/x-www-form-urlencoded') as String;*/
     var formData = {'lon': '115.02932', 'lat': '35.76189'};
+    print('======url=====:${servicePath['homePageContent']}');
     response = await dio.post(servicePath['homePageContent'], data: formData);
     if (response.statusCode == 200) {
       return response.data;
@@ -51,6 +71,21 @@ Future request(url, {formData}) async {
     print('开始获取数据.................');
     Response response;
     Dio dio = new Dio();
+
+
+
+    //简单粗暴方式处理校验证书方法
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate  = (client) {
+      client.badCertificateCallback=(X509Certificate cert, String host, int port){
+//          if(cert.pem==PEM){ // Verify the certificate
+//            return true;
+//          }
+        return true;
+      };
+    };
+
+
+
     dio.options.contentType =
         ContentType.parse('application/x-www-form-urlencoded').toString();
     if (formData == null) {

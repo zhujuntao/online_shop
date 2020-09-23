@@ -7,11 +7,13 @@ import 'package:onlineshop/page/floor_title.dart';
 import 'package:onlineshop/page/hot_goods.dart';
 import 'package:onlineshop/page/leader_phone.dart';
 import 'package:onlineshop/page/recommend.dart';
+import 'package:onlineshop/provide/child_category.dart';
 import 'package:onlineshop/service/service_method.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provide/provide.dart';
 
 import '../routers/application.dart';
 
@@ -23,7 +25,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 //  String homePageContent = '正在获取数据';
   int page = 1;
+  bool _isFooter = true;
   List<Map> hotGoodsList = [];
+
+  /*
+   * 加载更多完成添加消失
+   * */
+  _loadingBottomControl() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _isFooter = false;
+        Future.delayed(Duration(milliseconds: 500), () {
+          setState(() {
+            _isFooter = true;
+          });
+        });
+      });
+    });
+  }
 
 //  GlobalKey<RefreshFooterState> _footerkey=new GlobalKey<RefreshFooterState>();
 
@@ -222,20 +241,27 @@ class _HomePageState extends State<HomePage> {
                     _hotConWidget(),
                   ],
                 ),
-                onLoad: () async {
-                  print('开始加载更多......');
-                  var formPage = {'page': page};
-                  await request('homePageBelowConten', formData: formPage)
-                      .then((value) {
-                    var data = json.decode(value.toString());
-                    List<Map> newGoodsList = (data['data'] as List).cast();
-                    setState(() {
-                      hotGoodsList.addAll(newGoodsList);
-                      page++;
-                    });
-                    print(data);
-                  });
-                },
+                onLoad: _isFooter
+                    ? () async {
+                        print('开始加载更多......');
+                        var formPage = {'page': page};
+                        await request('homePageBelowConten', formData: formPage)
+                            .then((value) {
+                          var data = json.decode(value.toString());
+                          if (data['code'] == '0' && data['data'] != null) {
+                            List<Map> newGoodsList =
+                                (data['data'] as List).cast();
+                            setState(() {
+                              hotGoodsList.addAll(newGoodsList);
+                              page++;
+                            });
+                          } else {
+                            _loadingBottomControl();
+                          }
+                          print(data);
+                        });
+                      }
+                    : null,
                 onRefresh: () async {
                   print('开始刷新数据......');
                   await getHomePageContent();
@@ -322,6 +348,12 @@ class TopNavigator extends StatelessWidget {
     return InkWell(
       onTap: () {
         print('点击了导航');
+//        Provide.value<ChildCategory>(context).jumpToChangeChild(item['mallCategoryId']);
+        Provide.value<ChildCategory>(context).jumpToChangeChild(item['mallCategoryName']);
+        print('========mallCategoryId:${item['mallCategoryName']}');
+        Application.router.navigateTo(context, '/category');
+
+
       },
       child: Column(
         children: <Widget>[
