@@ -49,6 +49,8 @@ dependencies:
   fluro: ^1.6.3
   #web
   flutter_html: ^1.0.0
+  #数据持久化
+  shared_preferences: ^0.5.12
 
 dev_dependencies:
   flutter_test:

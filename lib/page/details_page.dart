@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onlineshop/page/details_page/details_bottom.dart';
 import 'package:onlineshop/page/details_page/details_tabbar.dart';
 import 'package:onlineshop/provide/details_info.dart';
 import 'package:provide/provide.dart';
@@ -28,20 +29,24 @@ class DetailsPage extends StatelessWidget {
           future: _getBackInfo(context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Container(
-                child: ListView(
-                  children: <Widget>[
-                    //头屏
-                    DetailTopArea(),
-                    //说明
-                    DetailsExplain(),
-                    //tabbar
-                    DetailsTabbar(),
-                    //详情&评论
-                    DetailsWeb(),
-
-                  ],
-                ),
+              return Stack(
+                children: <Widget>[
+                  Container(
+                    child: ListView(
+                      children: <Widget>[
+                        //头屏
+                        DetailTopArea(),
+                        //说明
+                        DetailsExplain(),
+                        //tabbar
+                        DetailsTabbar(),
+                        //详情&评论
+                        DetailsWeb(),
+                      ],
+                    ),
+                  ),
+                  Positioned(bottom: 0, left: 0, child: DetailsBottom())
+                ],
               );
             } else {
               return Text('加载中...');
